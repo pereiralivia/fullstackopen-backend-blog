@@ -12,7 +12,15 @@ const tokenExtractor = (request, response, next) => {
   if (!authorization || !authorization.startsWith('Bearer ')) {
     return response.status(401).send({ error: 'invalid token' });
   }
-  request.token = authorization.replace('Bearer ', '');
+
+  const token = authorization.replace('Bearer ', '');
+
+  if (!token || token === "undefined") {
+    return response.status(401).send({ error: 'invalid token' });
+  }
+
+  request.token = token;
+
   next();
 };
 
@@ -48,6 +56,6 @@ module.exports = {
   unknownEndpoints,
   tokenExtractor,
   userExtractor,
-  errorHandler
+  errorHandler,
 };
 

@@ -19,6 +19,13 @@ mongoose
     logger.error('error connecting to MongoDB: ', error.message)
   );
 
+const requestHandler = (request, response, next) => {
+  console.log('method: ', request.method);
+  console.log('authorization: ', request.get('authorization'));
+  next();
+};
+
+app.use(requestHandler);
 app.use(cors());
 app.use(express.json());
 app.use('/api/users', usersRouter);
