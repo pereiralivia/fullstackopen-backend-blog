@@ -1,2 +1,1 @@
 GET http://localhost:3001/api/blogs/640b722645873f690cd5a829
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im90aGVyIiwiaWQiOiI2NDBiMzMxZmU1ZTEzNjY0NTcwMjViMTUiLCJpYXQiOjE2Nzg4MjYxNjV9.nO24h4lOA4M1qvvwhMpDdUwvT5qTS5yr-q86CoDX-WU
