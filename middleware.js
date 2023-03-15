@@ -15,7 +15,7 @@ const tokenExtractor = (request, response, next) => {
 
   const token = authorization.replace('Bearer ', '');
 
-  if (!token || token === "undefined") {
+  if (!token || token === 'undefined') {
     return response.status(401).send({ error: 'invalid token' });
   }
 

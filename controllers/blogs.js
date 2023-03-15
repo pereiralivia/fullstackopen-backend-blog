@@ -2,7 +2,7 @@ const middleware = require('../middleware');
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 
-blogsRouter.get('/', middleware.userExtractor, async (request, response) => {
+blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user');
   response.json(blogs);
 });
@@ -36,23 +36,11 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   response.status(201).json(createdBlog);
 });
 
-blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
-  const userFromToken = request.user;
+blogsRouter.put('/:id', async (request, response) => {
+  const blogExists = await Blog.findById(request.params.id);
 
-  if (!userFromToken) {
-    return response.status(401).json({ error: 'invalid token' });
-  }
-
-  const blogToUpdate = await Blog.findById(request.params.id);
-
-  if (!blogToUpdate) {
+  if (!blogExists) {
     return response.status(404).end();
-  }
-
-  const userFromBlogId = blogToUpdate.user.toString();
-
-  if (userFromToken.id !== userFromBlogId) {
-    return response.status(401).json({ error: 'invalid token' });
   }
 
   const body = request.body;

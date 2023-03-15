@@ -22,15 +22,23 @@ mongoose
 const requestHandler = (request, response, next) => {
   console.log('method: ', request.method);
   console.log('authorization: ', request.get('authorization'));
+  console.log('body', request.body)
   next();
 };
 
-app.use(requestHandler);
 app.use(cors());
 app.use(express.json());
+app.use(requestHandler);
+
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/blogs', middleware.tokenExtractor, blogsRouter);
+
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing');
+  app.use('/api/testing', testingRouter);
+}
+
 app.use(middleware.unknownEndpoints);
 app.use(middleware.errorHandler);
 
