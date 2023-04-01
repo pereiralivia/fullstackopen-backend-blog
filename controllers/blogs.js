@@ -36,8 +36,34 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   response.status(201).json(createdBlog);
 });
 
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const blog = await Blog.findById(request.params.id);
+
+  if (!blog) return response.status(404).end();
+
+  const body = request.body;
+
+  const blogWithComment = {
+    ...body,
+    comments: [...blog.comments, body.comment],
+  };
+
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    request.params.id,
+    blogWithComment,
+    {
+      new: true,
+      runValidators: true,
+      context: 'query',
+    }
+  );
+
+  response.json(updatedBlog);
+});
+
 blogsRouter.put('/:id', async (request, response) => {
   const blogExists = await Blog.findById(request.params.id);
+  console.log();
 
   if (!blogExists) {
     return response.status(404).end();
